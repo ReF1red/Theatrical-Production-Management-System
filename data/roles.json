@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "production_id": 1,
+    "title": "Раневская",
+    "required_gender": "ж",
+    "min_age": 30,
+    "max_age": 45
+  },
+  {
+    "id": 2,
+    "production_id": 2,
+    "title": "Хлестаков",
+    "required_gender": "м",
+    "min_age": 20,
+    "max_age": 40
+  }
+]

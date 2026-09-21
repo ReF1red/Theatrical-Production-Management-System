@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "title": "Вишнёвый сад",
+    "author": "А. П. Чехов",
+    "genre": "драма",
+    "premiere_date": "2026-10-15",
+    "rehearsals_done": true,
+    "costumes_ready": true,
+    "scenery_ready": false
+  },
+  {
+    "id": 2,
+    "title": "Ревизор",
+    "author": "Н. В. Гоголь",
+    "genre": "комедия",
+    "premiere_date": "2026-11-20",
+    "rehearsals_done": false,
+    "costumes_ready": false,
+    "scenery_ready": false
+  }
+]

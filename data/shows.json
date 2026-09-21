@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "production_id": 1,
+    "datetime": "2026-10-20T19:00",
+    "hall": "Большой зал",
+    "capacity": 120
+  },
+  {
+    "id": 2,
+    "production_id": 2,
+    "datetime": "2026-11-25T19:30",
+    "hall": "Большой зал",
+    "capacity": 120
+  }
+]
