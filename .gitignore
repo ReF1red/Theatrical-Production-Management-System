@@ -16,3 +16,9 @@ venv/
 # Служебные файлы ОС
 .DS_Store
 Thumbs.db
+
+# Локальная база данных и её служебные файлы
+*.sqlite3
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
