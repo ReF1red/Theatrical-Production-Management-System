@@ -1,6 +1,7 @@
 from datetime import date
 
-from productions import (
+from models import Production
+from models.productions import (
     add_production,
     find_productions,
     get_production_status,
@@ -27,8 +28,8 @@ def test_add_and_find_production():
 
 def test_sort_productions_by_premiere_date():
     productions = [
-        {"title": "Б", "premiere_date": "2027-02-01"},
-        {"title": "А", "premiere_date": "2026-12-01"},
+        Production(1, "Б", "Автор", "драма", date(2027, 2, 1)),
+        Production(2, "А", "Автор", "драма", date(2026, 12, 1)),
     ]
     result = sort_productions(productions)
-    assert result[0]["title"] == "А"
+    assert result[0].title == "А"

@@ -1,18 +1,19 @@
-# Байт-код Python
 __pycache__/
 *.py[cod]
 .mypy_cache
 .pytest_cache
 
 
-# Виртуальное окружение
 venv/
 .venv/
 
-# Файлы IDE
 .idea/
 .vscode/
 
-# Служебные файлы ОС
 .DS_Store
 Thumbs.db
+
+*.sqlite3
+*.sqlite3-*
+
+/docs/

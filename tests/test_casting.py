@@ -1,4 +1,5 @@
-from casting import can_cast_actor, find_suitable_actors
+from models.casting import can_cast_actor, find_suitable_actors
+from models import Actor, Role
 
 
 def test_actor_matches_role():
@@ -6,15 +7,11 @@ def test_actor_matches_role():
     assert result == "Актёр подходит на роль по полу и возрасту"
 
 
-def test_find_suitable_actors():
+def test_find_suitable_actors(production):
     actors = [
-        {"name": "Анна", "gender": "ж", "age": 34},
-        {"name": "Пётр", "gender": "м", "age": 40},
+        Actor(1, "Анна", "ж", 34),
+        Actor(2, "Пётр", "м", 40),
     ]
-    role = {
-        "required_gender": "ж",
-        "min_age": 30,
-        "max_age": 45,
-    }
+    role = Role(1, production, "Офелия", "ж", 30, 45)
     result = find_suitable_actors(actors, role)
-    assert [actor["name"] for actor in result] == ["Анна"]
+    assert [actor.name for actor in result] == ["Анна"]

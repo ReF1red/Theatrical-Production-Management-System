@@ -1,4 +1,4 @@
-"""Вспомогательные функции безопасного пользовательского ввода."""
+"""Ввод данных."""
 
 from datetime import date, datetime
 
@@ -8,7 +8,6 @@ def input_int(
     min_value: int | None = None,
     max_value: int | None = None,
 ) -> int:
-    """Запросить целое число и повторять ввод при ошибке."""
     while True:
         try:
             value = int(input(prompt))
@@ -22,7 +21,6 @@ def input_int(
 
 
 def input_date(prompt: str) -> date:
-    """Запросить дату в формате ДД.ММ.ГГГГ."""
     while True:
         try:
             return datetime.strptime(input(prompt), "%d.%m.%Y").date()
@@ -31,7 +29,6 @@ def input_date(prompt: str) -> date:
 
 
 def input_datetime(prompt: str) -> datetime:
-    """Запросить дату и время в формате ДД.ММ.ГГГГ ЧЧ:ММ."""
     while True:
         try:
             return datetime.strptime(input(prompt), "%d.%m.%Y %H:%M")
@@ -40,7 +37,6 @@ def input_datetime(prompt: str) -> datetime:
 
 
 def input_yes_no(prompt: str) -> bool:
-    """Запросить ответ 'да' или 'нет'."""
     while True:
         answer = input(prompt).strip().lower()
         if answer in {"да", "д", "yes", "y"}:

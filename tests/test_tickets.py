@@ -1,4 +1,4 @@
-from tickets import calculate_ticket_price
+from models.tickets import calculate_ticket_price
 
 
 def test_ticket_price_with_discount():
