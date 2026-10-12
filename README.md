@@ -3,15 +3,7 @@
 Учебный проект: постановки, показы, билеты и подбор актёров.
 Есть консольное меню и сайт на Django. Данные хранятся в JSON.
 
-## Установка
-
 Нужен Python 3.10 или новее.
-
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
 
 ## Запуск
 
