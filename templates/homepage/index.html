@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-heading"><p class="eyebrow">Театральный сезон</p><h1>От репетиции до полного зала</h1><p class="description">Репертуар, готовность спектаклей, показы и бронирования в одном пространстве.</p></div>
+<div class="hero-actions"><a class="btn btn-primary" href="{% url 'repertoire:productions' %}">Открыть репертуар</a><a class="btn btn-outline-secondary" href="{% url 'performances:shows' %}">Расписание показов</a></div>
+<div class="metrics">
+  <div class="metric"><strong>{{ counters.productions }}</strong><span>Постановок в репертуаре</span></div>
+  <div class="metric"><strong>{{ counters.shows }}</strong><span>Показов в расписании</span></div>
+  <div class="metric"><strong>{{ counters.active }}</strong><span>Активных бронирований</span></div>
+</div>
+<section class="panel"><div class="panel-heading"><h2>Ближайшие показы</h2><a href="{% url 'performances:shows' %}">Всё расписание →</a></div>
+{% for show in upcoming %}<a class="show-preview" href="{% url 'performances:show_detail' show.id %}"><span class="show-date">{{ show.datetime|date:"d.m" }}</span><strong>{{ show.production.title }}</strong><span class="muted">{{ show.datetime|date:"H:i" }} · {{ show.hall }}</span><span aria-hidden="true">→</span></a>
+{% empty %}<p class="empty-state">Ближайших показов пока нет.</p>{% endfor %}</section>
+<h2>В репертуаре</h2><div class="production-grid">{% for production in productions %}{% include 'includes/production_card.html' %}{% empty %}<p class="empty-state">Постановок пока нет.</p>{% endfor %}</div>
+{% endblock %}

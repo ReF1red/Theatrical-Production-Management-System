@@ -1,4 +1,3 @@
-/* Общий стиль всех страниц; Bootstrap дополняет базовое оформление. */
 :root {
   --ink: #282624;
   --muted: #77726d;
@@ -120,3 +119,8 @@ dd { margin: 2px 0 18px; }
   .show-preview > span:last-child { grid-column: 3; grid-row: 1; }
   .panel, .production-card { padding: 20px; }
 }
+.filters { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+.filters input, .filters select { padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: #fff; max-width: 100%; }
+.back-to-top { position: fixed; right: 24px; bottom: 24px; background: #fffcf8; box-shadow: 0 2px 12px #28262420; }
+.back-to-top[hidden] { display: none; }
+.header-inner { flex-wrap: wrap; padding-block: 20px; }

@@ -15,5 +15,8 @@ Thumbs.db
 
 *.sqlite3
 *.sqlite3-*
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
 
 /docs/

@@ -1,5 +1,3 @@
-"""Ввод данных."""
-
 from datetime import date, datetime
 
 

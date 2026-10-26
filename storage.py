@@ -1,5 +1,3 @@
-"""Данные в JSON."""
-
 import json
 import os
 from dataclasses import dataclass
@@ -15,8 +13,6 @@ T = TypeVar("T")
 
 @dataclass
 class TheatreData:
-    """Данные театра."""
-
     productions: list[Production]
     actors: list[Actor]
     roles: list[Role]
@@ -42,7 +38,7 @@ def load_json(filename: str | Path) -> list[dict]:
 
 
 def save_json(filename: str | Path, data: list[dict]) -> None:
-    """Сначала пишем временный файл."""
+    """Атомарная запись."""
     path = Path(filename)
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = None
@@ -151,7 +147,6 @@ def save_bookings(filename: str | Path, items: list[Booking]) -> None:
 
 
 def load_project(directory: str | Path) -> TheatreData:
-    """Загружаем связанные данные по порядку."""
     directory = Path(directory)
     productions = load_productions(directory / "productions.json")
     actors = load_actors(directory / "actors.json")

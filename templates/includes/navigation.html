@@ -1,0 +1,8 @@
+<nav class="nav" aria-label="Основная навигация">
+  <a class="nav-link {% if section == 'home' %}active{% endif %}" href="{% url 'homepage:index' %}">Главная</a>
+  <a class="nav-link {% if section == 'productions' %}active{% endif %}" href="{% url 'repertoire:productions' %}">Репертуар</a>
+  <a class="nav-link {% if section == 'shows' %}active{% endif %}" href="{% url 'performances:shows' %}">Показы</a>
+  <a class="nav-link {% if section == 'bookings' %}active{% endif %}" href="{% url 'reservations:bookings' %}">Бронирования</a>
+  <a class="nav-link {% if section == 'available' %}active{% endif %}" href="{% url 'performances:available' %}">Свободные места</a>
+  {% if sql_enabled %}<a class="nav-link {% if section == 'statistics' %}active{% endif %}" href="{% url 'homepage:statistics' %}">Статистика</a>{% endif %}
+</nav>

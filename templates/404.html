@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<div class="section-heading"><p class="eyebrow">Ошибка 404</p><h1>{{ title|default:"Страница не найдена" }}</h1><p class="description">Проверьте адрес или вернитесь к списку.</p></div><a class="btn btn-primary" href="{% url back_route|default:'homepage:index' %}">{{ back_label|default:"На главную" }}</a>{% endblock %}

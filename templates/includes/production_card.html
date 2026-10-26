@@ -1,0 +1,8 @@
+<article class="production-card">
+  <p class="eyebrow">{{ production.genre|default:"Жанр не указан" }}</p>
+  <h2><a href="{% url 'repertoire:production_detail' production.id %}">{{ production.title }}</a></h2>
+  <p class="muted">{{ production.author }}</p>
+  <p>Премьера · {{ production.premiere_date|date:"d.m.Y" }}</p>
+  <span class="status {% if production.rehearsals_done and production.costumes_ready and production.scenery_ready %}status-ready{% else %}status-pending{% endif %}">{{ production.get_status }}</span>
+  <a class="card-link" href="{% url 'repertoire:production_detail' production.id %}">Подробнее →</a>
+</article>

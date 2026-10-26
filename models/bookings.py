@@ -4,8 +4,6 @@ from .validation import require_bool, require_int
 
 
 class Booking:
-    """Бронь на показ."""
-
     def __init__(
         self,
         booking_id: int,
@@ -43,7 +41,6 @@ class Booking:
         return self.ticket.price
 
     def cancel(self) -> None:
-        """Отменённая бронь остаётся в списке."""
         self.is_cancelled = True
 
     def get_status(self) -> str:

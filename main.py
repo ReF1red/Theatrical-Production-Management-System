@@ -1,5 +1,3 @@
-"""Консольное меню."""
-
 from pathlib import Path
 
 from models.bookings import (

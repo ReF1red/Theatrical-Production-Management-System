@@ -1,32 +1,31 @@
-"""Загрузка данных для сайта."""
-
+import sqlite3
+from contextlib import nullcontext
 from functools import wraps
 from typing import Callable
 
 from django.conf import settings
-from django.http import HttpRequest, HttpResponse
-from django.utils.html import format_html
+from django.shortcuts import render
 from django.views.decorators.http import require_safe
 
+from db.database import connect
+from db.repository import load_project as load_sqlite
 from storage import load_project
-
-from .presentation import heading, page
 
 
 def project_view(view: Callable) -> Callable:
-    """Читаем JSON перед открытием страницы."""
     @wraps(view)
-    def wrapped(request: HttpRequest, *args, **kwargs) -> HttpResponse:
+    def wrapped(request, *args, **kwargs):
         try:
-            data = load_project(settings.DATA_DIR)
-        except (ValueError, OSError):
-            content = format_html(
-                '{}<p>Попробуйте открыть страницу позже.</p>',
-                heading(
-                    "Временно недоступно", "Не удалось загрузить данные",
-                    "Информация театра сейчас недоступна.",
-                ),
+            if settings.DATA_SOURCE not in {"json", "sqlite"}:
+                raise ValueError("Неизвестный источник данных")
+            connection = (
+                connect(settings.SQLITE_PATH, readonly=True)
+                if settings.DATA_SOURCE == "sqlite" else nullcontext(None)
             )
-            return HttpResponse(page("Данные недоступны", content), status=503)
-        return view(request, *args, data=data, **kwargs)
+            with connection as conn:
+                data = (load_sqlite(conn) if conn is not None
+                        else load_project(settings.DATA_DIR))
+                return view(request, *args, data=data, conn=conn, **kwargs)
+        except (ValueError, OSError, sqlite3.Error, KeyError):
+            return render(request, "503.html", status=503)
     return require_safe(wrapped)

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back-link" href="{% url 'repertoire:productions' %}">← К репертуару</a>
+<div class="section-heading"><p class="eyebrow">Постановка</p><h1>{{ production.title }}</h1><p class="description">{{ production.author }}</p></div>
+<div class="detail-grid"><section class="panel"><h2>Подготовка спектакля</h2>
+{% for label, ready in readiness %}<div class="detail-row"><span>{{ label }}</span><span class="status {% if ready %}status-ready{% else %}status-pending{% endif %}">{{ ready|yesno:"Готово,В работе" }}</span></div>{% endfor %}<p class="muted">{{ production.get_status }}</p></section>
+<section class="panel"><h2>О постановке</h2><dl><dt>Автор</dt><dd>{{ production.author }}</dd><dt>Жанр</dt><dd>{{ production.genre }}</dd><dt>Премьера</dt><dd>{{ production.premiere_date|date:"d.m.Y" }}</dd></dl></section></div>
+<div class="detail-grid"><section class="panel"><h2>Показы</h2><ul class="plain-list">{% for show in shows %}<li><a href="{% url 'performances:show_detail' show.id %}">{{ show.datetime|date:"d.m.Y H:i" }} · {{ show.hall }}</a></li>{% empty %}<li class="muted">Показы ещё не запланированы.</li>{% endfor %}</ul></section>
+<section class="panel"><h2>Роли и актёры</h2><ul class="plain-list">{% for item in roles %}<li><strong>{{ item.role.title }}</strong><p class="muted">Возраст {{ item.role.min_age }}–{{ item.role.max_age }}, пол {{ item.role.required_gender }}. Подходят: {{ item.actors|join:", "|default:"нет актёров" }}</p></li>{% empty %}<li class="muted">Роли ещё не добавлены.</li>{% endfor %}</ul></section></div>
+{% endblock %}

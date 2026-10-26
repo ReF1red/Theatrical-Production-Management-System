@@ -8,8 +8,6 @@ DISCOUNT_MULTIPLIER = 0.7
 
 
 class Ticket:
-    """Билет с сохранённой ценой."""
-
     category = "полный"
 
     def __init__(
@@ -36,7 +34,7 @@ class Ticket:
 
     @property
     def price(self) -> float:
-        """Цена на момент бронирования."""
+        """Цена при бронировании."""
         return self._price
 
     def calculate_price(self) -> float:
@@ -47,8 +45,6 @@ class Ticket:
 
 
 class DiscountTicket(Ticket):
-    """Льготный билет."""
-
     category = "льготный"
 
     def calculate_price(self) -> float:

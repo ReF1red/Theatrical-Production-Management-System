@@ -24,7 +24,7 @@ URLS = [
 def web_data(tmp_path):
     for path in DATA_DIR.glob("*.json"):
         shutil.copy(path, tmp_path / path.name)
-    with override_settings(DATA_DIR=tmp_path):
+    with override_settings(DATA_DIR=tmp_path, DATA_SOURCE="json"):
         yield tmp_path
 
 

@@ -1,10 +1,12 @@
-"""Настройки Django."""
-
 import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
+DATA_SOURCE = os.environ.get("THEATRE_DATA_SOURCE", "sqlite")
+SQLITE_PATH = Path(os.environ.get(
+    "THEATRE_SQLITE_PATH", str(DATA_DIR / "theatre.sqlite"),
+))
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY", "theatre-local-development-key-for-pr5",
 )
@@ -28,11 +30,12 @@ ROOT_URLCONF = "theatre.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
                 "django.template.context_processors.request",
+                "homepage.context_processors.project",
             ],
         },
     },

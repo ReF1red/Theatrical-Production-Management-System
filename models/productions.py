@@ -17,8 +17,6 @@ def get_production_status(
 
 
 class Production:
-    """Постановка."""
-
     def __init__(
         self,
         production_id: int,

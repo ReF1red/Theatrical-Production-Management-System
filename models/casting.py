@@ -23,8 +23,6 @@ def can_cast_actor(
 
 
 class Actor:
-    """Актёр."""
-
     def __init__(
         self, actor_id: int, name: str, gender: str, age: int,
     ) -> None:
@@ -56,8 +54,6 @@ class Actor:
 
 
 class Role:
-    """Роль в постановке."""
-
     def __init__(
         self,
         role_id: int,

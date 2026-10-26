@@ -5,8 +5,6 @@ from .validation import require_int, require_text
 
 
 class Show:
-    """Показ постановки."""
-
     def __init__(
         self,
         show_id: int,

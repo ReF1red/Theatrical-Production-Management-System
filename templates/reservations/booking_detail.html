@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}<a class="back-link" href="{% url 'reservations:bookings' %}">← К бронированиям</a>
+<div class="section-heading"><p class="eyebrow">Бронирование</p><h1>Бронь #{{ booking.id }}</h1><p class="description">{{ booking.show.production.title }}</p></div>
+<div class="detail-grid"><section class="panel"><h2>Спектакль и показ</h2><dl><dt>Постановка</dt><dd><a href="{% url 'repertoire:production_detail' booking.show.production.id %}">{{ booking.show.production.title }}</a></dd><dt>Показ</dt><dd><a href="{% url 'performances:show_detail' booking.show.id %}">{{ booking.show.datetime|date:"d.m.Y H:i" }}</a></dd><dt>Зал</dt><dd>{{ details.hall }}</dd></dl></section>
+<section class="panel"><h2>Билет</h2>{% include 'includes/status.html' with cancelled=booking.is_cancelled only %}<dl><dt>Место</dt><dd>{{ booking.seat_number }}</dd><dt>Зона</dt><dd>{{ zone }}</dd><dt>Категория</dt><dd>{{ booking.category }}</dd><dt>Стоимость</dt><dd class="price">{{ booking.price|floatformat:"2u" }} руб.</dd></dl></section></div>
+{% endblock %}

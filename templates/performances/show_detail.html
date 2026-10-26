@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="back-link" href="{% url 'performances:shows' %}">← К расписанию</a>
+<div class="section-heading"><p class="eyebrow">Показ спектакля</p><h1>{{ show.production.title }}</h1><p class="description">{{ show.datetime|date:"d.m.Y H:i" }}</p></div>
+<div class="detail-grid"><section class="panel"><h2>О показе</h2><dl><dt>Постановка</dt><dd><a href="{% url 'repertoire:production_detail' show.production.id %}">{{ show.production.title }}</a></dd><dt>Дата и время</dt><dd>{{ show.datetime|date:"d.m.Y H:i" }}</dd><dt>Зал</dt><dd>{{ show.hall }}</dd><dt>Вместимость</dt><dd>{{ show.capacity }} мест</dd></dl></section>
+<section class="panel"><h2>Доступность мест</h2><p class="seat-count">{{ available }}<small> / {{ show.capacity }}</small></p><p class="muted">Свободно для бронирования</p>{% if available %}<span class="status status-ready">Есть свободные места</span>{% else %}<span class="status status-cancelled">Все места заняты</span>{% endif %}<p><a href="{% url 'reservations:bookings' %}">Все бронирования →</a></p></section></div>
+{% endblock %}

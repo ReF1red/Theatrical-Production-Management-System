@@ -1,0 +1,8 @@
+{% if shows %}<div class="panel table-responsive"><table class="table">
+  <thead><tr><th scope="col">Спектакль</th><th scope="col">Дата</th><th scope="col">Зал</th><th scope="col">Свободно мест</th></tr></thead>
+  <tbody>{% for show in shows %}<tr>
+    <td><a href="{% url 'performances:show_detail' show.id %}">{{ show.title }}</a></td>
+    <td>{{ show.datetime|date:"d.m.Y H:i" }}</td><td>{{ show.hall }}</td>
+    <td>{{ show.available }} из {{ show.capacity }}</td>
+  </tr>{% endfor %}</tbody>
+</table></div>{% else %}<p class="empty-state">Подходящих показов пока нет.</p>{% endif %}

@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="section-heading"><p class="eyebrow">Репертуар</p><h1>Постановки театра</h1><p class="description">Репертуар и готовность. Найдено постановок: {{ productions|length }}.</p></div>
+<form method="get" class="panel filters"><label for="genre">Жанр</label><select name="genre" id="genre"><option value="">Все жанры</option>{% for item in genres %}<option value="{{ item }}" {% if genre == item %}selected{% endif %}>{{ item|capfirst }}</option>{% endfor %}</select><button type="submit" class="btn btn-primary">Показать</button><a href="{% url 'repertoire:productions' %}">Сбросить</a></form>
+<div class="production-grid">{% for production in productions %}{% include 'includes/production_card.html' %}{% empty %}<p class="empty-state">Постановок пока нет.</p>{% endfor %}</div>
+{% endblock %}

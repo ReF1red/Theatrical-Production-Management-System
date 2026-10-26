@@ -1,73 +1,72 @@
-"""Страницы показов."""
+from datetime import date, datetime
 
-from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
-from django.utils.html import format_html, format_html_join
+from django.shortcuts import render
 
+from db.database import fetch
 from homepage.data import project_view
-from homepage.presentation import (
-    empty_state, heading, missing_object, page, status_badge,
-)
+from homepage.presentation import missing_object
 from models.bookings import get_available_seats
 from models.shows import get_show_by_id, sort_shows
-from storage import TheatreData
+
+
+def schedule_rows(data, conn=None, selected_date=None):
+    if conn is not None:
+        rows = (
+            fetch(conn, "available_shows", (selected_date,))
+            if selected_date else fetch(conn, "schedule")
+        )
+        return [dict(row, datetime=datetime.fromisoformat(row["datetime"]))
+                for row in rows]
+    rows = []
+    for show in sort_shows(data.shows):
+        available = get_available_seats(data.bookings, show)
+        if selected_date and (
+            show.datetime.date().isoformat() != selected_date or not available
+        ):
+            continue
+        rows.append({
+            "id": show.id, "title": show.production.title,
+            "datetime": show.datetime, "hall": show.hall,
+            "capacity": show.capacity, "available": available,
+        })
+    return rows
 
 
 @project_view
-def shows(request: HttpRequest, data: TheatreData) -> HttpResponse:
-    rows = format_html_join(
-        "", '<tr><td><a href="{}">{}</a></td><td>{}</td>'
-        '<td>{}</td><td>{} из {}</td></tr>',
-        ((reverse("performances:show_detail", args=[show.id]),
-          show.production.title, show.datetime.strftime("%d.%m.%Y %H:%M"),
-          show.hall, get_available_seats(data.bookings, show), show.capacity)
-         for show in sort_shows(data.shows)),
-    )
-    schedule = format_html(
-        '<div class="panel table-responsive"><table class="table">'
-        '<thead><tr><th scope="col">Спектакль</th><th scope="col">Дата</th>'
-        '<th scope="col">Зал</th><th scope="col">Свободно мест</th>'
-        '</tr></thead><tbody>{}</tbody></table></div>', rows,
-    ) if data.shows else empty_state("Показов пока нет.")
-    content = format_html(
-        '{}{}', heading("Расписание", "Показы спектаклей",
-                        "Даты, залы и доступные места."), schedule,
-    )
-    return HttpResponse(page("Показы", content, "shows"))
+def shows(request, data, conn=None):
+    return render(request, "performances/show_list.html", {
+        "title": "Показы", "section": "shows",
+        "shows": schedule_rows(data, conn),
+    })
 
 
 @project_view
-def show_detail(
-    request: HttpRequest, show_id: int, data: TheatreData,
-) -> HttpResponse:
+def available(request, data, conn=None):
+    selected = request.GET.get("date", "")
+    error = ""
+    rows = []
+    if selected:
+        try:
+            parsed = date.fromisoformat(selected)
+            if parsed.isoformat() != selected:
+                raise ValueError
+        except ValueError:
+            error = "Укажите дату в формате ГГГГ-ММ-ДД."
+        else:
+            rows = schedule_rows(data, conn, selected)
+    return render(request, "performances/available.html", {
+        "title": "Свободные места", "section": "available",
+        "selected_date": selected, "shows": rows, "error": error,
+    }, status=400 if error else 200)
+
+
+@project_view
+def show_detail(request, show_id, data, conn=None):
     show = get_show_by_id(data.shows, show_id)
     if show is None:
-        return missing_object(
-            "Показ не найден", "performances:shows", "К расписанию",
-        )
-    available = get_available_seats(data.bookings, show)
-    content = format_html(
-        '<a class="back-link" href="{}">← К расписанию</a>{}'
-        '<div class="detail-grid"><section class="panel">'
-        '<h2>О показе</h2><dl><dt>Постановка</dt>'
-        '<dd><a href="{}">{}</a></dd><dt>Дата и время</dt><dd>{}</dd>'
-        '<dt>Зал</dt><dd>{}</dd><dt>Вместимость</dt><dd>{} мест</dd>'
-        '</dl></section><section class="panel">'
-        '<h2>Доступность мест</h2>'
-        '<p class="seat-count">{}<small> / {}</small>'
-        '</p><p class="muted">Свободно для бронирования</p>{}'
-        '<p class="mt-3"><a href="{}">Все бронирования →</a></p>'
-        '</section></div>',
-        reverse("performances:shows"),
-        heading("Показ спектакля", show.production.title,
-                show.datetime.strftime("%d.%m.%Y · %H:%M")),
-        reverse("repertoire:production_detail", args=[show.production.id]),
-        show.production.title, show.datetime.strftime("%d.%m.%Y %H:%M"),
-        show.hall, show.capacity, available, show.capacity,
-        status_badge(
-            "Есть свободные места" if available else "Все места заняты",
-            "ready" if available else "cancelled",
-        ),
-        reverse("reservations:bookings"),
-    )
-    return HttpResponse(page(show.production.title, content, "shows"))
+        return missing_object(request, "Показ не найден",
+                              "performances:shows", "К расписанию")
+    return render(request, "performances/show_detail.html", {
+        "title": show.production.title, "section": "shows", "show": show,
+        "available": get_available_seats(data.bookings, show),
+    })
